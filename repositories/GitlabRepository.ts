@@ -24,7 +24,7 @@ export class GitlabRepository implements IGitlabRepository {
     try {
 
       // fetch for result
-      const response = await axios.get(`${this._options.gitlabEndpoint}${url}`, {
+      const response = await axios.get(new URL(url, this._options.gitlabEndpoint).href, {
         headers: {
           'PRIVATE-TOKEN': this._options.gitlabToken,
           'Content-Type': 'application/json',
@@ -60,11 +60,11 @@ export class GitlabRepository implements IGitlabRepository {
     }
   }
 
-  // https://github.com/renovatebot/renovate/blob/main/lib/modules/platform/gitlab/index.ts#L140
+  // https://github.com/renovatebot/renovate/blob/4006ef4667cc416d40f88b0be6ba24690def8500/lib/modules/platform/gitlab/index.ts#L144
   // Get all repositories that the user has access to
   public async getRepositories(): Promise<GitlabProject[]> {
 
-    this._logger.debug('Autodiscovering GitLab repositories');
+    this._logger.info('Autodiscovering GitLab repositories');
     try {
 
       const url = `projects?membership=true&per_page=100&min_access_level=30&archived=false`;
@@ -72,7 +72,7 @@ export class GitlabRepository implements IGitlabRepository {
         paginate: true,
       });
 
-      this._logger.debug(`Discovered ${res.length} project(s)`);
+      this._logger.info(`Discovered ${res.length} project(s)`);
       return res
         .filter((repo) => !repo.mirror && !repo.archived)
         .map((repo) => repo);
@@ -85,13 +85,13 @@ export class GitlabRepository implements IGitlabRepository {
 
   public async getGitlabCiYml(project_id: number): Promise<z.infer<typeof GitlabProjectCiLint>> {
 
-    // this._logger.debug('Autodiscovering GitLab repositories');
+    this._logger.debug(`Fetching CI from project with ID ${project_id}`);
     try {
 
       const url = `projects/${project_id}/ci/lint?include_jobs=true`;
       const res = await this.getJson<z.infer<typeof GitlabProjectCiLint>>(url, undefined, GitlabProjectCiLint);
 
-      // this._logger.debug(`Discovered ${res.length} project(s)`);
+      this._logger.debug(`Done fetching CI from project with ID ${project_id}`);
       return GitlabProjectCiLint.passthrough().parse(res);
 
     } catch (err) {

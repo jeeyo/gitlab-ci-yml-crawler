@@ -8,7 +8,7 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
 
-    "types": ["node", "reflect-metadata"],
+    "types": ["node", "reflect-metadata", "@types/jest"],
     "typeRoots": ["./types"]
   }
 }

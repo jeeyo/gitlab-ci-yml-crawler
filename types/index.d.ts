@@ -1,4 +1,4 @@
-// https://github.com/renovatebot/renovate/blob/main/lib/modules/platform/gitlab/types.ts#L52
+// https://github.com/renovatebot/renovate/blob/4006ef4667cc416d40f88b0be6ba24690def8500/lib/modules/platform/gitlab/types.ts#L52
 type MergeMethod = 'merge' | 'rebase_merge' | 'ff';
 
 interface GitlabProject {

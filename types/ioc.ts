@@ -14,6 +14,7 @@ export interface IOptions {
   dbUsername: string;
   dbPassword: string;
   dbBucket: string;
+  logLevel: string;
 }
 
 export interface ILogger {
@@ -27,9 +28,14 @@ export interface IDatabase {
   upsert: <T>(id: string, value: T, options?: object) => Promise<void>;
 }
 
+export interface ICrawlerService {
+  crawl: () => Promise<void>;
+}
+
 export const TYPES = {
   IGitlabRepository: Symbol.for('IGitlabRepository'),
   IOptions: Symbol.for('IOptions'),
   ILogger: Symbol.for('ILogger'),
   IDatabase: Symbol.for('IDatabase'),
+  ICrawlerService: Symbol.for('ICrawlerService'),
 };
