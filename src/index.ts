@@ -1,7 +1,5 @@
 import { Container } from 'inversify';
 
-// import yargs from 'yargs';
-// import { hideBin } from 'yargs/helpers';
 import * as IoC from '../types/ioc';
 
 import { GitlabRepository } from '../repositories/GitlabRepository';
@@ -11,19 +9,6 @@ import minimatch from 'minimatch';
 
 (async () => {
 
-  // const options =
-  //   yargs(hideBin(process.argv))
-  //     .option('gitlab-endpoint', {
-  //       type: 'string',
-  //       description: 'a HTTP endpoint for Gitlab API',
-  //     })
-  //     .option('gitlab-endpoint', {
-  //       type: 'string',
-  //       description: 'an access token for accessing Gitlab API'
-  //     })
-  //     .parse() as IoC.IOptions;
-
-  // TODO: remove default values;
   const options: IoC.IOptions = {
     gitlabEndpoint: process.env.GITLAB_API_ENDPOINT || '',
     gitlabToken: process.env.GITLAB_API_TOKEN || '',
@@ -49,7 +34,6 @@ import minimatch from 'minimatch';
         new winston.transports.Console({
           format: winston.format.simple(),
         }),
-        // TODO: add Seq
       ],
     })
   );
@@ -74,7 +58,7 @@ import minimatch from 'minimatch';
 
   for (const repo of repositories) {
     console.log(`Retrieving ${repo.path_with_namespace}`);
-    couchbaseRepo.upsert(repo.path_with_namespace, await gitlabRepo.getGitlabCiYml(repo.id));
+    couchbaseRepo.upsert(repo.path_with_namespace.toLowerCase(), await gitlabRepo.getGitlabCiYml(repo.id));
   };
 
 })();

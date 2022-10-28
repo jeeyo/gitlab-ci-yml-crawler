@@ -16,12 +16,3 @@ interface GitlabProject {
   path_with_namespace: string;
   squash_option?: 'never' | 'always' | 'default_on' | 'default_off';
 }
-
-interface GitlabProjectCILint {
-  valid: boolean;
-  errors: string[];
-  warnings: string[];
-  merged_yaml: string;
-  includes: string[];
-  jobs: object[]; // will be validated at runtime
-}

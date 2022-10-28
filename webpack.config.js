@@ -15,7 +15,10 @@ module.exports = {
       },
       {
         test: /\.node$/,
-        loader: "node-loader",
+        loader: 'node-loader',
+        options: {
+          name: "[name].[ext]",
+        },
       },
     ],
   },
@@ -33,6 +36,6 @@ module.exports = {
 
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build'),
   },
 };

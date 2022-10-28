@@ -1,9 +1,9 @@
 import z from 'zod';
-import { GitlabJobDefinitionsWithNameAndStage } from './GitlabJobDefinitionsWithNameAndStage';
+import { schema as GitlabProjectCiLint } from '../types/GitlabProjectCiLint';
 
 export interface IGitlabRepository {
   getRepositories: () => Promise<GitlabProject[]>;
-  getGitlabCiYml(project_id: number): Promise<z.infer<typeof GitlabJobDefinitionsWithNameAndStage>[]>;
+  getGitlabCiYml(project_id: number): Promise<z.infer<typeof GitlabProjectCiLint>>;
 }
 
 export interface IOptions {
@@ -25,10 +25,6 @@ export interface ILogger {
 
 export interface IDatabase {
   upsert: <T>(id: string, value: T, options?: object) => Promise<void>;
-  insert: <T>(id: string, value: T, options?: object) => Promise<void>;
-  replace: <T>(id: string, value: T, options?: object) => Promise<void>;
-  get: <T>(id: string, options?: object) => Promise<T>;
-  remove: (id: string, options?: object) => Promise<void>;
 }
 
 export const TYPES = {

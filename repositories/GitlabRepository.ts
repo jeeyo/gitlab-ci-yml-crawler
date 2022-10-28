@@ -1,10 +1,9 @@
 import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
 import { IGitlabRepository, IOptions, ILogger, TYPES } from '../types/ioc';
-import { GitlabJobDefinitionsWithNameAndStage } from '../types/GitlabJobDefinitionsWithNameAndStage';
+import { schema as GitlabProjectCiLint } from '../types/GitlabProjectCiLint';
 import axios from 'axios';
 import z from 'zod';
-import yaml from 'yaml';
 
 @injectable()
 export class GitlabRepository implements IGitlabRepository {
@@ -84,16 +83,16 @@ export class GitlabRepository implements IGitlabRepository {
     }
   }
 
-  public async getGitlabCiYml(project_id: number): Promise<z.infer<typeof GitlabJobDefinitionsWithNameAndStage>[]> {
+  public async getGitlabCiYml(project_id: number): Promise<z.infer<typeof GitlabProjectCiLint>> {
 
     // this._logger.debug('Autodiscovering GitLab repositories');
     try {
 
       const url = `projects/${project_id}/ci/lint?include_jobs=true`;
-      const res = await this.getJson<GitlabProjectCILint>(url);
+      const res = await this.getJson<z.infer<typeof GitlabProjectCiLint>>(url, undefined, GitlabProjectCiLint);
 
       // this._logger.debug(`Discovered ${res.length} project(s)`);
-      return z.array(GitlabJobDefinitionsWithNameAndStage.passthrough()).parse(res.jobs);
+      return GitlabProjectCiLint.passthrough().parse(res);
 
     } catch (err) {
       this._logger.error(`GitLab getRepositories error`, { err });
