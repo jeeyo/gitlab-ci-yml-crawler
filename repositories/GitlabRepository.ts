@@ -24,9 +24,9 @@ export class GitlabRepository implements IGitlabRepository {
     try {
 
       // fetch for result
-      const response = await axios.get(new URL(url, this._options.gitlabEndpoint).href, {
+      const response = await axios.get(new URL(url, this._options.gitlab.endpoint).href, {
         headers: {
-          'PRIVATE-TOKEN': this._options.gitlabToken,
+          'PRIVATE-TOKEN': this._options.gitlab.token,
           'Content-Type': 'application/json',
         },
       });

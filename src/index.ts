@@ -6,26 +6,31 @@ import { GitlabRepository } from '../repositories/GitlabRepository';
 import { CouchbaseRepository } from '../repositories/CouchbaseRepository';
 import { CrawlerService } from '../services/CrawlerService';
 import winston from 'winston';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 
 (async () => {
 
-  const options: IoC.IOptions = {
-    gitlabEndpoint: process.env.GITLAB_API_ENDPOINT || '',
-    gitlabToken: process.env.GITLAB_API_TOKEN || '',
-    gitlabRepoGlob: process.env.GITLAB_REPO_GLOB || '*/**',
-    dbHost: process.env.DB_HOST || 'couchbase://localhost',
-    dbUsername: process.env.DB_USER || '',
-    dbPassword: process.env.DB_PASS || '',
-    dbBucket: process.env.DB_BUCKET || 'gitlab-ci-yml-crawler',
-    logLevel: process.env.LOG_LEVEL || 'info',
-  };
-
   const app = new Container();
-  app.bind<IoC.IOptions>(IoC.TYPES.IOptions).toConstantValue(options);
+  app.bind<IoC.IOptions>(IoC.TYPES.IOptions).toConstantValue(
+    yargs(hideBin(process.argv))
+      .option({
+        'gitlab.endpoint': { type: 'string', default: 'https://gitlab.agodadev.io/api/v4/' },
+        'gitlab.token': { type: 'string' },
+        'gitlab.glob': { type: 'string', default: '**/**' },
+        'db.host': { type: 'string' },
+        'db.user': { type: 'string' },
+        'db.password': { type: 'string' },
+        'db.bucket': { type: 'string', default: 'gitlab-ci-yml-crawler' },
+        'loglevel': { type: 'string', default: 'info' },
+      })
+      .coerce(['gitlab', 'db'], opt => ({ ...opt }))
+      .parseSync()
+  );
   app.bind<IoC.IGitlabRepository>(IoC.TYPES.IGitlabRepository).to(GitlabRepository);
   app.bind<IoC.ILogger>(IoC.TYPES.ILogger).toConstantValue(
     winston.createLogger({
-      level: app.get<IoC.IOptions>(IoC.TYPES.IOptions).logLevel,
+      level: app.get<IoC.IOptions>(IoC.TYPES.IOptions).loglevel,
       format: winston.format.json(),
       defaultMeta: {
         service: process.env.npm_package_name,

@@ -10,12 +10,12 @@ Currently, GitLab CI Yml Crawler only support Couchbase through `CouchbaseReposi
 
 ```sh
 docker run \
-  -e GITLAB_API_ENDPOINT=https://gitlab.com/api/v4/ \
-  -e GITLAB_API_TOKEN=<YOUR_GITLAB_ACCESS_TOKEN> \
-  -e GITLAB_REPO_GLOB=**/** \
-  -e DB_HOST=couchbase://localhost \
-  -e DB_USER=dbuser \
-  -e DB_PASS=dbpass \
-  -e DB_BUCKET=dbbucket \
-  -e LOG_LEVEL=info \
-  jeeyo/gitlab-ci-yml-crawler:latest
+  jeeyo/gitlab-ci-yml-crawler:latest \
+  gitlab.endpoint=https://gitlab.com/api/v4/ \
+  gitlab.token=<YOUR_GITLAB_ACCESS_TOKEN> \
+  gitlab.glob=**/** \
+  db.host=couchbase://localhost \
+  db.user=dbuser \
+  db.pass=dbpass \
+  db.bucket=dbbucket \
+  loglevel=info

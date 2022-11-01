@@ -7,14 +7,18 @@ export interface IGitlabRepository {
 }
 
 export interface IOptions {
-  gitlabEndpoint: string;
-  gitlabToken: string;
-  gitlabRepoGlob: string;
-  dbHost: string;
-  dbUsername: string;
-  dbPassword: string;
-  dbBucket: string;
-  logLevel: string;
+  gitlab: {
+    endpoint: string;
+    token: string;
+    glob: string;
+  };
+  db: {
+    host: string;
+    user: string;
+    pass: string;
+    bucket: string;
+  };
+  loglevel: string;
 }
 
 export interface ILogger {

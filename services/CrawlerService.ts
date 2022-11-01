@@ -26,8 +26,8 @@ export class CrawlerService implements ICrawlerService {
   // filter by repository name with specified glob pattern
   private filterWithGlob(repos: GitlabProject[]) {
 
-    if (this._options.gitlabRepoGlob.length > 0) {
-      return repos.filter(repo => minimatch(repo.path_with_namespace, this._options.gitlabRepoGlob));
+    if (this._options.gitlab.glob.length > 0) {
+      return repos.filter(repo => minimatch(repo.path_with_namespace, this._options.gitlab.glob));
     }
 
     return repos;

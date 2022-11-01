@@ -29,12 +29,12 @@ export class CouchbaseRepository implements IDatabase {
       return;
     }
 
-    this._cluster = await couchbase.connect(this._options.dbHost, {
-      username: this._options.dbUsername,
-      password: this._options.dbPassword,
+    this._cluster = await couchbase.connect(this._options.db.host, {
+      username: this._options.db.user,
+      password: this._options.db.pass,
     });
 
-    this._bucket = this._cluster.bucket(this._options.dbBucket);
+    this._bucket = this._cluster.bucket(this._options.db.bucket);
     this._collection = this._bucket.defaultCollection();
   }
 

@@ -42,7 +42,7 @@ describe('CrawlerService', () => {
                 .returnsAsync();
 
     const mockOptions = new Mock<IOptions>()
-                .setup(instance => instance.gitlabRepoGlob)
+                .setup(instance => instance.gitlab.glob)
                 .returns('');
 
     const mockLogger = new Mock<ILogger>()
