@@ -20,5 +20,5 @@ export const schema = z.object({
       }),
     }),
   ).nullable(),
-  jobs: z.array(GitlabJobDefinitionsWithNameAndStage),
+  jobs: z.array(GitlabJobDefinitionsWithNameAndStage.passthrough()),
 });
