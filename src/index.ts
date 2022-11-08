@@ -18,7 +18,7 @@ import { hideBin } from 'yargs/helpers';
         'gitlab.endpoint': { type: 'string', default: 'https://gitlab.agodadev.io/api/v4/' },
         'gitlab.token': { type: 'string' },
         'gitlab.glob': { type: 'string', default: '**/**' },
-        'db.host': { type: 'string' },
+        'db.host': { type: 'string', default: 'couchbase://localhost' },
         'db.user': { type: 'string' },
         'db.password': { type: 'string' },
         'db.bucket': { type: 'string', default: 'gitlab-ci-yml-crawler' },
